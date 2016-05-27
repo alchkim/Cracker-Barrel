@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System.IO;
 
 public class GameLogic : MonoBehaviour {
+    public static bool somethingMoving = false;
     public int held = -1;
     public int[] validMoves;
     public List<Transform> numPegs;
@@ -78,15 +79,15 @@ public class GameLogic : MonoBehaviour {
         tw.Close();
     }
 
-    //Click goes to _Menu
-    public void menuClick () {
-        SceneManager.LoadScene("_Menu");
-    }
+    ////Click goes to _Menu
+    //public void menuClick () {
+    //    SceneManager.LoadScene("_Menu");
+    //}
 
-    //Click goes to _Replay
-    public void replayClick () {
-        SceneManager.LoadScene("_Replay");
-    }
+    ////Click goes to _Replay
+    //public void replayClick () {
+    //    SceneManager.LoadScene("_Replay");
+    //}
 
     //Initializes game UI
     void Start () {

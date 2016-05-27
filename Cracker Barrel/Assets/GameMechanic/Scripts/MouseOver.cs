@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class MouseOver : MonoBehaviour {
     Color origColor;
-    bool clickable = true;
     public Transform startMarker;
     public Transform endMarker;
     public Transform holdingMarker;
@@ -19,7 +18,8 @@ public class MouseOver : MonoBehaviour {
 
     //Highlights peg
     void OnMouseOver () {
-        if (isValidPeg() && (!manager.isHolding() || (manager.holdingWhat() == curSpot))) {
+        if (isValidPeg() && (!manager.isHolding() || (manager.holdingWhat() == curSpot)) &&
+            !GameLogic.somethingMoving) {
             gameObject.GetComponent<MeshRenderer>().material.color = new Color(origColor.r + 155,
                                                                                 origColor.g + 155,
                                                                                 origColor.b + 155);
@@ -87,7 +87,7 @@ public class MouseOver : MonoBehaviour {
     bool part3 = false;
     bool part4 = false;
     bool part5 = false;
-    float speed = 5.0F;
+    public float speed;
     float startTime;
     float journeyLength;
 
@@ -97,6 +97,7 @@ public class MouseOver : MonoBehaviour {
         startTime = Time.time;
         journeyLength = Vector3.Distance(startMarker.position, endMarker.position);
         manager.setValidMoves(showValidMoves());
+        GameLogic.somethingMoving = true;
     }
 
     //Starts putting peg back into original slot
@@ -105,6 +106,7 @@ public class MouseOver : MonoBehaviour {
         startTime = Time.time;
         journeyLength = Vector3.Distance(holdingMarker.position, endMarker.position);
         manager.setValidMoves(new int[] { -1, -1, -1, -1, -1, -1 });
+        GameLogic.somethingMoving = true;
     }
 
     //Starts moving peg from holding spot to destination
@@ -115,6 +117,7 @@ public class MouseOver : MonoBehaviour {
         manager.tw.Write("M " + manager.holdingWhat() + " " + dest + " " + manager.timer.GetComponent<Text>().text + "\r\n");
         manager.holdPeg(-1);
         destSpot = dest;
+        GameLogic.somethingMoving = true;
     }
 
     void Update () {
@@ -133,17 +136,18 @@ public class MouseOver : MonoBehaviour {
                 startMarker = holdingMarker;
                 holdingMarker = temp;
                 startTime = Time.time;
+                if (!part3) GameLogic.somethingMoving = false;
             }
         } else if (part3) { //Picks up peg
             movement(startMarker, endMarker);
             if (gameObject.transform.position == endMarker.position) {
                 part3 = false;
                 part4 = true;
-                startTime = Time.time;
             }
         } else if (part4) { //Moves peg to new slot
             startMarker = endMarker;
             endMarker = GameObject.Find(destSpot.ToString()).transform.GetChild(1);
+            startTime = Time.time;
             movement(startMarker, endMarker);
             if (gameObject.transform.position == endMarker.position) {
                 part4 = false;
@@ -169,6 +173,7 @@ public class MouseOver : MonoBehaviour {
                 Debug.Log(start);
                 Neighbors middle = GameObject.Find(curNeighbors.inMiddle(start).ToString()).GetComponent<Neighbors>();
                 delete(middle);
+                GameLogic.somethingMoving = false;
             }
         }
     }

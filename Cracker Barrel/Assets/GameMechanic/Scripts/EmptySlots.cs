@@ -12,7 +12,7 @@ public class EmptySlots : MonoBehaviour {
 
     //Turns on renderer if slot is a valid move for current peg
     void OnMouseOver () {
-        if (manager.isValidMove(curSpot)) {
+        if (manager.isValidMove(curSpot) && !GameLogic.somethingMoving) {
             rend.enabled = true;
         }
     }

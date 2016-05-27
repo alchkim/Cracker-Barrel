@@ -50,6 +50,7 @@
      <Compile Include="Assets\GameMechanic\Scripts\MouseOver.cs" />
      <Compile Include="Assets\GameMechanic\Scripts\Neighbors.cs" />
      <Compile Include="Assets\GameMechanic\Scripts\PegGenerator.cs" />
+     <Compile Include="Assets\GameMechanic\Scripts\ReplayLogic.cs" />
      <Compile Include="Assets\GameMechanic\Scripts\SlotGenerator.cs" />
      <Compile Include="Assets\UI\Scripts\ChangeScene.cs" />
      <Compile Include="Assets\UI\Scripts\GenerateMenu.cs" />
