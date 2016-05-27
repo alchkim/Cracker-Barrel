@@ -9,9 +9,11 @@ public class MouseOver : MonoBehaviour {
     }
 
     void OnMouseOver () {
-        gameObject.GetComponent<MeshRenderer>().material.color = new Color (origColor.r + 155, 
-                                                                            origColor.g + 155, 
-                                                                            origColor.b + 155);
+        if (isValid()) {
+            gameObject.GetComponent<MeshRenderer>().material.color = new Color(origColor.r + 155,
+                                                                                origColor.g + 155,
+                                                                                origColor.b + 155);
+        }
     }
 
     void OnMouseExit () {
@@ -20,5 +22,20 @@ public class MouseOver : MonoBehaviour {
 
     void OnMouseClick () {
         print(gameObject.transform.parent.name);
+    }
+
+    public bool isValid () {
+        Neighbors curNode = gameObject.GetComponentInParent<Neighbors>();
+        for (int i=0; i<6; i++) {
+            int name = curNode.neighbors[i*2];
+            if (name != -1) {
+                if (curNode.neighbors[i*2+1] == 1) {
+                    if (GameObject.Find(name.ToString()).GetComponent<Neighbors>().nearBlank((i))) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

@@ -12,4 +12,26 @@ public class Neighbors : MonoBehaviour {
     public void updateNeighbors(int visitorNode, int exist) {
         neighbors[visitorNode*2+1] = exist;
     }
+
+    //Nextby should be form 0-5. Only checks if across from nextby is empty
+    public bool nearBlank(int nextby) {
+        int name = neighbors[nextby*2];
+        if (name != -1) {
+            if (neighbors[nextby*2+1] != 1) return true;
+        }
+        return false;
+    }
+
+    public bool neighborNearBlank(int nextby) {
+        for (int i=0; i<6; i++) {
+            int name = neighbors[i * 2];
+            if (name != -1) {
+                Neighbors curNeighbor = GameObject.Find(name.ToString()).GetComponent<Neighbors>();
+                if (curNeighbor.nearBlank((i+3)%6)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
