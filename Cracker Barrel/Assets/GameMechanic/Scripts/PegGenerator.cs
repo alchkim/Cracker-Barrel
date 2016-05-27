@@ -6,19 +6,17 @@ public class PegGenerator : MonoBehaviour {
     public GameObject slotList;
     public GameObject peg;
     public Transform holdingMarker;
+    GameLogic logic;
     Neighbors[] tList;
 
 	// Use this for initialization
 	void Start () {
         int random;
-
-        tList = slotList.GetComponentsInChildren<Neighbors> ();
+        logic = transform.GetComponent<GameLogic>();
+        tList = slotList.GetComponentsInChildren<Neighbors>();
         //random = Random.Range(0, tList.Length);
         random = 3;
         foreach (Neighbors child in tList) {
-            if (child.name == "SlotList") {
-                continue;
-            }
             if (int.Parse(child.name) != random) {
                 createPeg(child.transform);
             }
@@ -40,6 +38,7 @@ public class PegGenerator : MonoBehaviour {
         newMouse.curSpot = int.Parse(slot.name);
         Neighbors curSlot = slot.GetComponent<Neighbors>();
         tellNeighbors (curSlot, 1);
+        logic.numPegs.Add(newPeg.transform);
     }
 
     //Update surrounding neighbors

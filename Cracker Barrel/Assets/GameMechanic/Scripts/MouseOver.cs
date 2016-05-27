@@ -170,7 +170,9 @@ public class MouseOver : MonoBehaviour {
 
     //Deletes peg at current slot and updates surrounding slots' neighbors
     void delete (Neighbors target) {
-        Destroy(target.transform.GetChild(2).transform.gameObject);
+        Transform targetPeg = target.transform.GetChild(2).transform;
+        manager.numPegs.Remove(targetPeg);
+        Destroy(targetPeg.gameObject);
         manager.GetComponent<PegGenerator>().tellNeighbors(target, 0);
     }
 }
