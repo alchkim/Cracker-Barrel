@@ -18,23 +18,29 @@ public class GenerateMenu : MonoBehaviour {
 
         float buttonX = 0;
 
+        //Placed text
         float buttonY = 0 + (buttonRect.rect.height*2);
         place(buttonX, buttonY, text);
 
+        //Placed easy
         buttonY = 0 + (buttonRect.rect.height);
         createButton(buttonX, buttonY, easy);
 
+        //Placed medium
         buttonY = 0;
         createButton(buttonX, buttonY, medium);
 
+        //Placed hard
         buttonY = 0 - (buttonRect.rect.height);
         createButton(buttonX, buttonY, hard);
     }
 
+    //Places UI component based on buttonX and buttonY position
     void place (float buttonX, float buttonY, GameObject ui) {
         ui.GetComponent<RectTransform>().anchoredPosition = new Vector2(buttonX, buttonY);
     }
 
+    //Creates a new button and places it based on buttonX and buttonY position
     void createButton (float buttonX, float buttonY, GameObject button) {
         GameObject newButton = Instantiate(button);
         newButton.transform.SetParent(canvas.transform);
