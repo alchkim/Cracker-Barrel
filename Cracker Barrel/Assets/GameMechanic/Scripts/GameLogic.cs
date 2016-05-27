@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.IO;
 
 public class GameLogic : MonoBehaviour {
     public int held = -1;
@@ -11,7 +13,7 @@ public class GameLogic : MonoBehaviour {
     public RectTransform result;
     public RectTransform goToMenu;
     public RectTransform replay;
-
+    public TextWriter tw;
     float timeRemaining;
     float elapsedTime;
     bool canPlay;
@@ -73,6 +75,17 @@ public class GameLogic : MonoBehaviour {
         held = -2;
         goToMenu.gameObject.SetActive(true);
         replay.gameObject.SetActive(true);
+        tw.Close();
+    }
+
+    //Click goes to _Menu
+    public void menuClick () {
+        SceneManager.LoadScene("_Menu");
+    }
+
+    //Click goes to _Replay
+    public void replayClick () {
+        SceneManager.LoadScene("_Replay");
     }
 
     //Initializes game UI
@@ -86,7 +99,14 @@ public class GameLogic : MonoBehaviour {
                                                 -Screen.height/2 + goToMenu.rect.height);
         replay.anchoredPosition = new Vector2(Screen.width / 2 - goToMenu.rect.width,
                                             -Screen.height / 2 + goToMenu.rect.height + replay.rect.height);
-        timeRemaining = 10;
+        timeRemaining = 45;
+        tw = new StreamWriter(Application.persistentDataPath + @"/replay.txt");
+        tw.Write("S ");
+        foreach (Transform peg in numPegs) {
+            tw.Write(peg.GetComponent<MouseOver>().curSpot + " ");
+        }
+        tw.Write("\r\n");
+        elapsedTime = 0;
     }
 
     //Checks if number of pegs is equal to one, if so declare winner

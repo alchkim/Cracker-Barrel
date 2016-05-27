@@ -38,14 +38,19 @@ public class Neighbors : MonoBehaviour {
         return false;
     }
 
+    //Returns a neighbor based on the number of nextby
+    //Nextby should be between 0 inclusive to 6 exclusive
     public int returnAcross (int nextby) {
         return neighbors[nextby * 2];
     }
 
+    //Gets neighbors member variable from the Neighbor of named slot
     public Neighbors getNeighbor (int name) {
         return GameObject.Find(name.ToString()).GetComponent<Neighbors>();
     }
 
+    //Returns the name of the slot between two Neighbors
+    //Returns -1 if no neighbor between the two;
     public int inMiddle (Neighbors curr) {
         for (int i=0; i<6; i++) {
             int a = neighbors[i * 2];
