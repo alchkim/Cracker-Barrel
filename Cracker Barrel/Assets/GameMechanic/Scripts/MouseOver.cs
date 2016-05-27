@@ -166,6 +166,7 @@ public class MouseOver : MonoBehaviour {
                 curNeighbors = GameObject.Find(curSpot.ToString()).GetComponent<Neighbors>();
                 manager.GetComponent<PegGenerator>().tellNeighbors(curNeighbors, 1);
                 //Removes peg in between slots
+                Debug.Log(start);
                 Neighbors middle = GameObject.Find(curNeighbors.inMiddle(start).ToString()).GetComponent<Neighbors>();
                 delete(middle);
             }

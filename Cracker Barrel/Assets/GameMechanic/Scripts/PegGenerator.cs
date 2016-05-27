@@ -14,8 +14,7 @@ public class PegGenerator : MonoBehaviour {
         int random;
         logic = transform.GetComponent<GameLogic>();
         tList = slotList.GetComponentsInChildren<Neighbors>();
-        //random = Random.Range(0, tList.Length);
-        random = 3;
+        random = Random.Range(0, tList.Length);
         foreach (Neighbors child in tList) {
             if (int.Parse(child.name) != random) {
                 createPeg(child.transform);

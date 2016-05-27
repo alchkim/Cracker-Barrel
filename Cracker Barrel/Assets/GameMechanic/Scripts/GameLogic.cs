@@ -14,7 +14,7 @@ public class GameLogic : MonoBehaviour {
     public RectTransform goToMenu;
     public RectTransform replay;
     public TextWriter tw;
-    float timeRemaining;
+    public float timeRemaining;
     float elapsedTime;
     bool canPlay;
     bool seenOne;
@@ -99,7 +99,6 @@ public class GameLogic : MonoBehaviour {
                                                 -Screen.height/2 + goToMenu.rect.height);
         replay.anchoredPosition = new Vector2(Screen.width / 2 - goToMenu.rect.width,
                                             -Screen.height / 2 + goToMenu.rect.height + replay.rect.height);
-        timeRemaining = 45;
         tw = new StreamWriter(Application.persistentDataPath + @"/replay.txt");
         tw.Write("S ");
         foreach (Transform peg in numPegs) {
