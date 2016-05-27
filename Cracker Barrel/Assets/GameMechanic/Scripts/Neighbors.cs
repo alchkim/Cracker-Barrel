@@ -17,7 +17,9 @@ public class Neighbors : MonoBehaviour {
     public bool nearBlank(int nextby) {
         int name = neighbors[nextby*2];
         if (name != -1) {
-            if (neighbors[nextby*2+1] != 1) return true;
+            if (neighbors[nextby * 2 + 1] != 1) {
+                return true;
+            }
         }
         return false;
     }
@@ -38,5 +40,20 @@ public class Neighbors : MonoBehaviour {
 
     public int returnAcross (int nextby) {
         return neighbors[nextby * 2];
+    }
+
+    public Neighbors getNeighbor (int name) {
+        return GameObject.Find(name.ToString()).GetComponent<Neighbors>();
+    }
+
+    public int inMiddle (Neighbors curr) {
+        for (int i=0; i<6; i++) {
+            int a = neighbors[i * 2];
+            int b = curr.neighbors[(i + 3) % 6 * 2];
+            if (a == b && a!= -1 && b != -1) {
+                return a;
+            }
+        }
+        return -1;
     }
 }

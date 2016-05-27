@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class GameLogic : MonoBehaviour {
-    int held = -1;
+    public int held = -1;
     public int[] validMoves;
 
     public bool isHolding () {

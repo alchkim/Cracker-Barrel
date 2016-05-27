@@ -13,7 +13,8 @@ public class PegGenerator : MonoBehaviour {
         int random;
 
         tList = slotList.GetComponentsInChildren<Neighbors> ();
-        random = Random.Range(0, tList.Length);
+        //random = Random.Range(0, tList.Length);
+        random = 3;
         foreach (Neighbors child in tList) {
             if (child.name == "SlotList") {
                 continue;
@@ -38,16 +39,16 @@ public class PegGenerator : MonoBehaviour {
         newMouse.manager = gameObject.transform.GetComponent<GameLogic>();
         newMouse.curSpot = int.Parse(slot.name);
         Neighbors curSlot = slot.GetComponent<Neighbors>();
-        tellNeighbors (curSlot);
+        tellNeighbors (curSlot, 1);
     }
 
     //Update surrounding neighbors
-    void tellNeighbors (Neighbors curSlot) {
+    public void tellNeighbors (Neighbors curSlot, int exist) {
         for (int i=0; i<6; i++) {
             int name = curSlot.neighbors[i*2];
             if (name != -1) {
                 GameObject curNeighbor = GameObject.Find(name.ToString());
-                curNeighbor.GetComponent<Neighbors>().updateNeighbors((i+3)%6, 1);
+                curNeighbor.GetComponent<Neighbors>().updateNeighbors((i+3)%6, exist);
             }
         }
     }

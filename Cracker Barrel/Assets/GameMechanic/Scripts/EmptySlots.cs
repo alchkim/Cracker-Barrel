@@ -21,6 +21,9 @@ public class EmptySlots : MonoBehaviour {
     }
 
     void OnMouseUp () {
-
+        Transform curPegHeld = GameObject.Find(manager.holdingWhat().ToString()).transform.GetChild(2);
+        curPegHeld.GetComponent<MouseOver>().moveBack();
+        curPegHeld.GetComponent<MouseOver>().moveTo(curSpot);
+        rend.enabled = false;
     }
 }
