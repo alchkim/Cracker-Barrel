@@ -22,7 +22,8 @@ public class Neighbors : MonoBehaviour {
         return false;
     }
 
-    public bool neighborNearBlank(int nextby) {
+    //Checks if the neighbor's neighbor across is blank
+    public bool neighborNearBlank (int nextby) {
         for (int i=0; i<6; i++) {
             int name = neighbors[i * 2];
             if (name != -1) {
@@ -33,5 +34,9 @@ public class Neighbors : MonoBehaviour {
             }
         }
         return false;
+    }
+
+    public int returnAcross (int nextby) {
+        return neighbors[nextby * 2];
     }
 }

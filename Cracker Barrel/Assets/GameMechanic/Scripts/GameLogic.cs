@@ -2,14 +2,35 @@
 using System.Collections;
 
 public class GameLogic : MonoBehaviour {
+    int held = -1;
+    public int[] validMoves;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	    
-	}
+    public bool isHolding () {
+        if (held != -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void holdPeg (int name) {
+        held = name;
+    }
+
+    public int holdingWhat () {
+        return held;
+    }
+
+    public void setValidMoves (int[] curValidMoves) {
+        validMoves = curValidMoves;
+    }
+
+    public bool isValidMove (int dest) {
+        for (int i=0; i<6; i++) {
+            if (validMoves[i] == dest) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
