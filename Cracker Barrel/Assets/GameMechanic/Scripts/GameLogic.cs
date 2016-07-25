@@ -7,6 +7,8 @@ using System.IO;
 
 public class GameLogic : MonoBehaviour {
     public static bool somethingMoving = false;
+    public static Vector3 heldPos = new Vector3(5, 3, 4);
+    public static int[] noValidMoves = new int[] { -1, -1, -1, -1, -1, -1 };
     public int held = -1;
     public int[] validMoves;
     public List<Transform> numPegs;
@@ -46,6 +48,7 @@ public class GameLogic : MonoBehaviour {
 
     //Checks if peg can move to destination slot
     public bool isValidMove (int dest) {
+        if (held == dest) return true;
         for (int i=0; i<6; i++) {
             if (validMoves[i] == dest) {
                 return true;

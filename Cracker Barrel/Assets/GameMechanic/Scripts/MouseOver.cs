@@ -4,9 +4,12 @@ using UnityEngine.UI;
 
 public class MouseOver : MonoBehaviour {
     Color origColor;
-    public Transform startMarker;
-    public Transform endMarker;
-    public Transform holdingMarker;
+    public Transform startMarker;       //Deprecated
+    public Transform endMarker;         //Deprecated
+    public Transform holdingMarker;     //Deprecated
+    public Vector3 slotPos;             //Better
+    public Vector3 midPoint;            //Better
+    public Vector3 heldPos;             //Better
     public GameLogic manager;
     public int curSpot;
     int destSpot;
@@ -95,7 +98,8 @@ public class MouseOver : MonoBehaviour {
     public void moveToHolding () {
         part1 = true;
         startTime = Time.time;
-        journeyLength = Vector3.Distance(startMarker.position, endMarker.position);
+//        journeyLength = Vector3.Distance(startMarker.position, endMarker.position);
+        journeyLength = Vector3.Distance(slotPos, midPoint);
         manager.setValidMoves(showValidMoves());
         GameLogic.somethingMoving = true;
     }
@@ -104,7 +108,8 @@ public class MouseOver : MonoBehaviour {
     public void moveBack () {
         part1 = true;
         startTime = Time.time;
-        journeyLength = Vector3.Distance(holdingMarker.position, endMarker.position);
+//        journeyLength = Vector3.Distance(holdingMarker.position, endMarker.position);
+        journeyLength = Vector3.Distance(heldPos, midPoint);
         manager.setValidMoves(new int[] { -1, -1, -1, -1, -1, -1 });
         GameLogic.somethingMoving = true;
     }
@@ -113,7 +118,8 @@ public class MouseOver : MonoBehaviour {
     public void moveTo (int dest) {
         part3 = true;
         startTime = Time.time;
-        journeyLength = Vector3.Distance(startMarker.position, endMarker.position);
+//        journeyLength = Vector3.Distance(startMarker.position, endMarker.position);
+        journeyLength = Vector3.Distance(slotPos, midPoint);
         manager.tw.Write("M " + manager.holdingWhat() + " " + dest + " " + manager.timer.GetComponent<Text>().text + "\r\n");
         manager.holdPeg(-1);
         destSpot = dest;
@@ -122,42 +128,58 @@ public class MouseOver : MonoBehaviour {
 
     void Update () {
         if (part1) { //Either picks up peg or moves peg from holding spot to a hover above original slot
-            movement(startMarker, endMarker);
-            if (gameObject.transform.position == endMarker.position) {
+//            movement(startMarker, endMarker);
+            movement(slotPos, midPoint);
+//            if (gameObject.transform.position == endMarker.position) {
+            if (gameObject.transform.position == midPoint) {
                 part1 = false;
                 part2 = true;
                 startTime = Time.time;
             }
         } else if (part2) { //Either moves peg to holding spot or puts peg back in original slot
-            movement(endMarker, holdingMarker);
-            if (gameObject.transform.position == holdingMarker.position) {
+//            movement(endMarker, holdingMarker);
+            movement(midPoint, heldPos);
+//            if (gameObject.transform.position == holdingMarker.position) {
+            if (gameObject.transform.position == heldPos) {
                 part2 = false;
-                Transform temp = startMarker;
-                startMarker = holdingMarker;
-                holdingMarker = temp;
+//                Transform temp = startMarker;
+//                startMarker = holdingMarker;
+//                holdingMarker = temp;
+                Vector3 temp = slotPos;
+                slotPos = heldPos;
+                heldPos = temp;
                 startTime = Time.time;
                 if (!part3) GameLogic.somethingMoving = false;
             }
         } else if (part3) { //Picks up peg
-            movement(startMarker, endMarker);
-            if (gameObject.transform.position == endMarker.position) {
+//            movement(startMarker, endMarker);
+            movement(slotPos, midPoint);
+//            if (gameObject.transform.position == endMarker.position) {
+            if (gameObject.transform.position == midPoint) {
                 part3 = false;
                 part4 = true;
             }
         } else if (part4) { //Moves peg to new slot
-            startMarker = endMarker;
-            endMarker = GameObject.Find(destSpot.ToString()).transform.GetChild(1);
+//            startMarker = endMarker;
+//            endMarker = GameObject.Find(destSpot.ToString()).transform.GetChild(1);
+            slotPos = midPoint;
+            midPoint = GameObject.Find(destSpot.ToString()).transform.GetComponent<MouseOver>().midPoint;
             startTime = Time.time;
-            movement(startMarker, endMarker);
-            if (gameObject.transform.position == endMarker.position) {
+//            movement(startMarker, endMarker);
+            movement(slotPos, midPoint);
+//            if (gameObject.transform.position == endMarker.position) {
+            if (gameObject.transform.position == midPoint) {
                 part4 = false;
                 part5 = true;
                 startTime = Time.time;
             }
         } else if (part5) { //Puts peg into new slot
-            startMarker = GameObject.Find(destSpot.ToString()).transform.GetChild(0);
-            movement(endMarker, startMarker);
-            if (gameObject.transform.position == startMarker.position) {
+//            startMarker = GameObject.Find(destSpot.ToString()).transform.GetChild(0);
+            slotPos = GameObject.Find(destSpot.ToString()).transform.GetComponent<MouseOver>().slotPos;
+//            movement(endMarker, startMarker);
+            movement(midPoint, slotPos);
+//            if (gameObject.transform.position == startMarker.position) {
+            if (gameObject.transform.position == slotPos) {
                 part5 = false;
                 Neighbors curNeighbors, start;
                 start = GameObject.Find(curSpot.ToString()).GetComponent<Neighbors>();
@@ -183,6 +205,12 @@ public class MouseOver : MonoBehaviour {
         float distCovered = (Time.time - startTime) * speed;
         float fracJourney = distCovered / journeyLength;
         gameObject.transform.position = Vector3.Lerp(pA.position, pB.position, fracJourney);
+    }
+
+    void movement (Vector3 pA, Vector3 pB) {
+        float distCovered = (Time.time - startTime) * speed;
+        float fracJourney = distCovered / journeyLength;
+        gameObject.transform.position = Vector3.Lerp(pA, pB, fracJourney);
     }
 
     //Deletes peg at current slot and updates surrounding slots' neighbors
